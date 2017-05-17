@@ -42,6 +42,7 @@ RUN apt-get update && \
         libleveldb-dev \
         python-virtualenv \
         libssl-dev \
+        beanstalkd \
         redis-server \
         python-pip && \
     apt-get clean && \
@@ -91,8 +92,10 @@ COPY swift_s3.cfg /home/openio
 
 EXPOSE 5000
 
-CMD exec su - openio -c "\
-    memcached -d && \
+CMD exec \
+    service beanstalkd start & \
+    service memcached start & \
+    su - openio -c "\
     cd /home/openio && \
     . oio/bin/activate && \
     oio-reset.sh -v -f ./oio-sds/etc/bootstrap-preset-SINGLE.yml && \
