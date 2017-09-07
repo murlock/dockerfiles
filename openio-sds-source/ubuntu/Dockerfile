@@ -67,7 +67,8 @@ RUN su - openio -c "\
     make install && \
     cd ../oio-sds && \
     python setup.py install && \
-    pip install -r all-requirements.txt\
+    pip install -r all-requirements.txt && \
+    pip install requests \
     "
 
 RUN su - openio -c "\
